@@ -1,4 +1,4 @@
-/* ===== CSS RESET & BASE ===== */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -21,14 +21,14 @@ html, body {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== SCREENS ===== */
+
 .screen {
     position: fixed;
     inset: 0;
     overflow: hidden;
 }
 
-/* ===== SCREEN 1: CAMERA ===== */
+
 .bg-layer {
     position: absolute;
     inset: 0;
@@ -235,14 +235,14 @@ html, body {
 
 .hidden-input { display: none; }
 
-/* ===== SCREEN 2: EDIT ===== */
+
 #screen-edit {
     display: flex;
     flex-direction: column;
     background: var(--pink-bg);
 }
 
-/* ===== SIDEBAR ===== */
+
 .edit-sidebar {
     background: var(--white);
     box-shadow: 0 4px 30px rgba(255,133,162,0.15);
@@ -340,7 +340,7 @@ html, body {
     box-shadow: 0 4px 12px var(--shadow);
 }
 
-/* ===== TAB PANELS ===== */
+
 .tab-panel {
     flex: 1;
     overflow-y: auto;
@@ -349,7 +349,7 @@ html, body {
 }
 .tab-panel.hidden { display: none; }
 
-/* Sticker tab */
+
 .sticker-search-row { margin-bottom: 10px; }
 .sticker-search-input {
     width: 100%;
@@ -536,7 +536,7 @@ html, body {
 }
 .btn-delete:active { background: #fce4ed; }
 
-/* ===== WORKSPACE ===== */
+
 #workspace {
     flex: 1;
     overflow: auto;
@@ -560,14 +560,14 @@ html, body {
     margin-top: 4px;
 }
 
-/* Strip wrapper — NO CSS transform. Fabric zoom handles scaling. */
+
 #strip-wrapper {
     position: relative;
     flex-shrink: 0;
     margin: 8px auto;
 }
 
-/* Photo strip background — same display size as the scaled canvas */
+
 #photo-strip-bg {
     position: absolute;
     top: 0; left: 0;
@@ -579,7 +579,7 @@ html, body {
     z-index: 1;
 }
 
-/* Fabric wraps canvas in .canvas-container — keep it on top */
+
 .canvas-container {
     position: absolute !important;
     top: 0 !important;
@@ -596,7 +596,7 @@ html, body {
 .custom-scroll::-webkit-scrollbar-track { background: transparent; }
 .custom-scroll::-webkit-scrollbar-thumb { background: var(--pink-pale); border-radius: 10px; }
 
-/* ===== TOAST ===== */
+
 .toast {
     position: fixed;
     bottom: 30px;
@@ -618,7 +618,7 @@ html, body {
 }
 .toast.hidden { opacity: 0; pointer-events: none; }
 
-/* ===== DESKTOP LAYOUT ===== */
+
 @media (min-width: 1024px) {
     #screen-edit { flex-direction: row-reverse; }
     .edit-sidebar {
@@ -631,7 +631,7 @@ html, body {
     .zoom-hint { display: none; }
 }
 
-/* ===== MOBILE LAYOUT ===== */
+
 @media (max-width: 1023px) {
     #screen-edit { flex-direction: column; }
     .edit-sidebar {
