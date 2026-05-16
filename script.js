@@ -1,15 +1,4 @@
-/* ============================================================
-   GENSHIN SNAP — script.js  (fixed)
-   Fixes:
-   1. Sticker/emoji/text interaction: use Fabric zoom instead of
-      CSS transform so hit-testing is always correct on mobile & desktop.
-   2. Photo squash: cover-crop webcam frame to strip aspect ratio.
-   3. Upload: multiple files, up to 4 images.
-   ============================================================ */
 
-'use strict';
-
-// ── STRIP CONSTANTS (full-resolution) ────────────────────────
 const STRIP_W   = 1100;
 const STRIP_H   = 3800;
 const PHOTO_W   = 1000;
@@ -18,7 +7,7 @@ const PAD_X     = 50;
 const PAD_TOP   = 120;
 const PHOTO_GAP = 55;
 
-// ── STATE ─────────────────────────────────────────────────────
+
 let capturedPhotos     = [];
 let fCanvas            = null;
 let currentScale       = 1;
@@ -26,7 +15,7 @@ let currentBorderColor = '#FFFFFF';
 let currentBgImage     = '';
 let isCapturing        = false;
 
-// ── STICKER CONFIG ────────────────────────────────────────────
+
 const STICKER_FILES = [
     "Furina 1.png","Furina 2.png","Furina 3.png","Furina 4.png",
     "Ganyu 1.png","Ganyu 2.png","Ganyu 5.png",
@@ -42,7 +31,7 @@ const STICKER_FILES = [
 ];
 const TOTAL_SETS = 42;
 
-// ── UTILITIES ─────────────────────────────────────────────────
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 function showToast(msg, ms = 2200) {
@@ -63,7 +52,7 @@ function loadImage(src) {
     });
 }
 
-// Cover-crop: draw video into canvas without squashing
+
 function drawCoverCrop(ctx, video, dw, dh) {
     const vw = video.videoWidth  || 640;
     const vh = video.videoHeight || 480;
@@ -92,7 +81,7 @@ function pickContrastColor(hex, alpha) {
     return `rgba(${lum > 140 ? '0,0,0' : '255,255,255'},${alpha})`;
 }
 
-// ── CAMERA ────────────────────────────────────────────────────
+// camera
 const video = document.getElementById('video');
 let videoStream = null;
 
@@ -118,7 +107,7 @@ function stopCamera() {
     }
 }
 
-// ── UPLOAD (up to 4 images) ───────────────────────────────────
+//the upload part here
 document.getElementById('upload-input').addEventListener('change', function () {
     const files = Array.from(this.files).slice(0, 4);
     if (!files.length) return;
@@ -136,7 +125,7 @@ document.getElementById('upload-input').addEventListener('change', function () {
     this.value = '';
 });
 
-// ── CAPTURE SEQUENCE ──────────────────────────────────────────
+
 document.getElementById('start-btn').addEventListener('click', async () => {
     if (isCapturing) return;
     if (!videoStream) { showToast('No camera. Use Upload!', 2500); return; }
@@ -180,7 +169,7 @@ document.getElementById('start-btn').addEventListener('click', async () => {
     goToEditMode();
 });
 
-// ── EDIT MODE ─────────────────────────────────────────────────
+
 function goToEditMode() {
     document.getElementById('screen-camera').style.display = 'none';
     document.getElementById('screen-edit').style.display = '';
@@ -188,10 +177,7 @@ function goToEditMode() {
     loadAllStickers();
 }
 
-// ── FABRIC CANVAS SETUP ───────────────────────────────────────
-// CRITICAL FIX: use fCanvas.setZoom(scale) + setWidth/Height so Fabric
-// knows the display size → pointer events always land correctly.
-// No CSS transform is used on the canvas wrapper.
+
 
 async function setupFabricCanvas() {
     if (fCanvas) { fCanvas.dispose(); fCanvas = null; }
@@ -220,10 +206,10 @@ async function setupFabricCanvas() {
         allowTouchScrolling: false,
     });
 
-    // ★ Tell Fabric the zoom level — this is what makes pointer events correct
+    
     fCanvas.setZoom(scale);
 
-    // Keyboard delete
+ 
     document.addEventListener('keydown', e => {
         if ((e.key === 'Delete' || e.key === 'Backspace') && fCanvas) {
             if (document.activeElement.tagName === 'INPUT') return;
@@ -260,7 +246,7 @@ function onResize() {
     fCanvas.requestRenderAll();
 }
 
-// ── BUILD STRIP BACKGROUND ────────────────────────────────────
+
 async function buildAndShowStripBg() {
     const c   = document.createElement('canvas');
     c.width   = STRIP_W;
@@ -302,7 +288,7 @@ async function buildAndShowStripBg() {
     document.getElementById('photo-strip-bg').style.backgroundImage = `url(${c.toDataURL()})`;
 }
 
-// ── STICKER LOADING ───────────────────────────────────────────
+
 let allStickerPaths = [];
 
 function loadAllStickers() {
@@ -361,9 +347,6 @@ document.getElementById('sticker-search').addEventListener('input', function () 
     });
 });
 
-// ── ADD OBJECTS TO CANVAS ─────────────────────────────────────
-// Positions are in FULL-res strip coordinates.
-// Fabric's zoom maps them to screen automatically.
 
 function addStickerToCanvas(path) {
     fabric.Image.fromURL(path, (fImg) => {
@@ -438,7 +421,7 @@ document.getElementById('delete-selected-btn').addEventListener('click', () => {
     fCanvas.requestRenderAll();
 });
 
-// ── TABS ──────────────────────────────────────────────────────
+
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', function () {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -448,7 +431,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// ── BORDER / BG ───────────────────────────────────────────────
+
 document.querySelectorAll('.border-btn').forEach(btn => {
     btn.addEventListener('click', function () {
         currentBorderColor = this.dataset.color;
@@ -467,7 +450,7 @@ document.querySelectorAll('.bg-btn').forEach(btn => {
     });
 });
 
-// ── RETAKE ────────────────────────────────────────────────────
+
 document.getElementById('retake-btn').addEventListener('click', () => {
     if (fCanvas) { fCanvas.dispose(); fCanvas = null; }
     window.removeEventListener('resize', onResize);
@@ -481,7 +464,7 @@ document.getElementById('retake-btn').addEventListener('click', () => {
     startCamera();
 });
 
-// ── SAVE ──────────────────────────────────────────────────────
+
 document.getElementById('save-btn').addEventListener('click', async function () {
     const btn = this;
     btn.textContent = 'SAVING…';
@@ -512,7 +495,7 @@ document.getElementById('save-btn').addEventListener('click', async function () 
             ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
         }
 
-        // Export Fabric at full resolution: reset zoom → export → restore
+        
         const savedScale = currentScale;
         fCanvas.setZoom(1);
         fCanvas.setWidth(STRIP_W);
