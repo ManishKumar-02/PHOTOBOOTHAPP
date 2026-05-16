@@ -13,7 +13,13 @@ even making this project, i feel like I still barely know html and might not be 
 
 #rant ends.
 
-
+#about the project
 this project involves 4 captures with 3 second delay for poses and and also an upload option. then the usual stickers and customisation on the next page. i had initially setup 1500+ sticker pngs but that was stupid of me since it's hard to read so many and the amount of requests would crash the site especially on mobile. i limited it to a few set of folders that you can find in assets. hence some users might see different stickers compared to others. there is no online save and the website stores the images locally, i cannot access the images taken by other users nor is there any way for me to so dont worry about it
 
+also I love creative ideas and always want to work on something that's interesting and different but feel like my skills being a limit really shuts me up and often time makes me negative and learning feels like dragging your feet through mud at some times because of this fear of how the future would change and if i'm just wasting time. thanks for reading
+
 i hope you like it :D
+
+
+#installation
+hey so If you want to download this and edit something you can just download the whole folder or the assets plus html, js and css, store them all together and run in VS code. i've also deployed a page if you would like a quick look at it. can also use this link: https://genshinphotoboothzt.netlify.app/
