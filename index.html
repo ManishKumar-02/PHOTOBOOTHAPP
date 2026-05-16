@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title> Genshin Photobooth </title>
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400;600;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== SCREEN 1: CAMERA ===== -->
+    <div id="screen-camera" class="screen active">
+
+        <div class="bg-layer"></div>
+
+        <div class="camera-content">
+            <div class="title-block">
+                <h1 class="main-title">GENSHIN SNAP</h1>
+                <p class="subtitle">✨ Yaharo there :) ✨</p>
+            </div>
+
+            <div class="booth-wrapper">
+                <div class="booth-frame">
+                    <video id="video" autoplay playsinline class="mirror"></video>
+                    <div id="countdown" class="countdown hidden"></div>
+                    <div id="flash" class="flash"></div>
+                    <div class="booth-corner tl"></div>
+                    <div class="booth-corner tr"></div>
+                    <div class="booth-corner bl"></div>
+                    <div class="booth-corner br"></div>
+                </div>
+                <div id="photo-count-bar" class="photo-count-bar hidden">
+                    <span id="shot-1" class="shot-dot"></span>
+                    <span id="shot-2" class="shot-dot"></span>
+                    <span id="shot-3" class="shot-dot"></span>
+                    <span id="shot-4" class="shot-dot"></span>
+                </div>
+            </div>
+
+            <div class="sig-row">
+                <input type="text" id="user-signature" placeholder="your signature..." class="sig-input" maxlength="30">
+            </div>
+
+            <div class="camera-btns">
+                <button id="start-btn" class="btn-primary">START SNAP</button>
+                <label class="btn-upload" for="upload-input">🖼 UPLOAD PHOTO (max 4)</label>
+                <input type="file" id="upload-input" accept="image/*" multiple class="hidden-input">
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 2: EDIT ===== -->
+    <div id="screen-edit" class="screen" style="display:none;">
+
+        <!-- TOP BAR (mobile) / SIDEBAR (desktop) -->
+        <aside class="edit-sidebar">
+            <div class="sidebar-header">
+                <button id="retake-btn" class="btn-retake">← RETAKE</button>
+                <h2 class="decorate-title">DECORATE!</h2>
+                <button id="save-btn" class="btn-save">SAVE</button>
+            </div>
+
+            <div class="tabs-row">
+                <button class="tab-btn active" data-tab="sticker">STICKERS</button>
+                <button class="tab-btn" data-tab="emoji">EMOJIS</button>
+                <button class="tab-btn" data-tab="border">BORDERS</button>
+                <button class="tab-btn" data-tab="text">TEXT</button>
+            </div>
+
+            <!-- STICKERS TAB -->
+            <div id="tab-sticker" class="tab-panel active">
+                <div class="sticker-search-row">
+                    <input type="text" id="sticker-search" placeholder="🔍 search sticker name..." class="sticker-search-input">
+                </div>
+                <div id="sticker-library" class="sticker-grid custom-scroll"></div>
+                <p id="sticker-loading-msg" class="sticker-msg">Loading stickers...</p>
+            </div>
+
+            <!-- EMOJIS TAB -->
+            <div id="tab-emoji" class="tab-panel hidden">
+                <div class="emoji-grid">
+                    <span class="emoji-item" data-e="✨">✨</span>
+                    <span class="emoji-item" data-e="🌸">🌸</span>
+                    <span class="emoji-item" data-e="💖">💖</span>
+                    <span class="emoji-item" data-e="⭐">⭐</span>
+                    <span class="emoji-item" data-e="🎀">🎀</span>
+                    <span class="emoji-item" data-e="🌙">🌙</span>
+                    <span class="emoji-item" data-e="🔥">🔥</span>
+                    <span class="emoji-item" data-e="💫">💫</span>
+                    <span class="emoji-item" data-e="🌊">🌊</span>
+                    <span class="emoji-item" data-e="⚡">⚡</span>
+                    <span class="emoji-item" data-e="🌿">🌿</span>
+                    <span class="emoji-item" data-e="❄️">❄️</span>
+                    <span class="emoji-item" data-e="💎">💎</span>
+                    <span class="emoji-item" data-e="🦋">🦋</span>
+                    <span class="emoji-item" data-e="🌺">🌺</span>
+                    <span class="emoji-item" data-e="🍡">🍡</span>
+                    <span class="emoji-item" data-e="🎆">🎆</span>
+                    <span class="emoji-item" data-e="🥹">🥹</span>
+                    <span class="emoji-item" data-e="😭">😭</span>
+                    <span class="emoji-item" data-e="🫶">🫶</span>
+                </div>
+            </div>
+
+            <!-- BORDERS TAB -->
+            <div id="tab-border" class="tab-panel hidden">
+                <div class="border-grid">
+                    <button class="border-btn" data-color="#FF4D4D" style="background:#FF4D4D;color:#fff">PYRO</button>
+                    <button class="border-btn" data-color="#3399FF" style="background:#3399FF;color:#fff">HYDRO</button>
+                    <button class="border-btn" data-color="#CC66FF" style="background:#CC66FF;color:#fff">ELECTRO</button>
+                    <button class="border-btn" data-color="#FFD700" style="background:#FFD700;color:#333">GEO</button>
+                    <button class="border-btn" data-color="#33CCCC" style="background:#33CCCC;color:#fff">ANEMO</button>
+                    <button class="border-btn" data-color="#66CC33" style="background:#66CC33;color:#fff">DENDRO</button>
+                    <button class="border-btn" data-color="#A8DAFF" style="background:#A8DAFF;color:#333">CRYO</button>
+                    <button class="border-btn selected" data-color="#FFFFFF" style="background:#fff;border:3px solid #ffb6c1;color:#ff85a2">WHITE</button>
+                    <button class="border-btn" data-color="#1a1a2e" style="background:#1a1a2e;color:#fff">NIGHT</button>
+                    <button class="border-btn" data-color="#ffc8dd" style="background:#ffc8dd;color:#c9547e">PETAL</button>
+                </div>
+
+                <p class="border-label">Strip Background Image</p>
+                <div class="bg-grid">
+                    <button class="bg-btn active" data-bg="">None (clean)</button>
+                    <button class="bg-btn" data-bg="ASSETS/bg.webp">Game BG</button>
+                </div>
+            </div>
+
+            <!-- TEXT TAB -->
+            <div id="tab-text" class="tab-panel hidden">
+                <div class="text-add-row">
+                    <input type="text" id="custom-text-input" placeholder="Type here..." class="custom-text-field">
+                    <button id="add-text-btn" class="btn-add-text">ADD</button>
+                </div>
+                <p class="text-hint">After adding, tap text on strip to resize & move it!</p>
+                <div class="font-size-row">
+                    <label class="font-size-label">Size</label>
+                    <input type="range" id="font-size-slider" min="30" max="250" value="80" class="font-slider">
+                    <span id="font-size-display">80</span>
+                </div>
+                <div class="color-row">
+                    <label class="font-size-label">Color</label>
+                    <input type="color" id="text-color-picker" value="#ff85a2" class="color-picker">
+                </div>
+
+                <div class="delete-row">
+                    <button id="delete-selected-btn" class="btn-delete">🗑 DELETE SELECTED</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- WORKSPACE -->
+        <section id="workspace">
+            <div id="strip-wrapper">
+                <!-- The photo strip visual (rendered beneath canvas) -->
+                <div id="photo-strip-bg"></div>
+                <!-- Fabric.js canvas sits on top -->
+                <canvas id="edit-canvas"></canvas>
+            </div>
+            <p class="zoom-hint">Pinch to zoom • Drag stickers freely</p>
+        </section>
+
+    </div>
+
+    <!-- Hidden output canvas for saving -->
+    <canvas id="output-canvas" style="display:none;"></canvas>
+
+    <!-- Toast notifications -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
